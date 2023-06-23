@@ -1,0 +1,22 @@
+{
+  "name": "myproj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "axios-retry": "^3.5.0",
+    "cheerio": "^1.0.0-rc.12",
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
+    "nodemon": "^2.0.22",
+    "xhr2": "^0.2.1"
+  }
+}
