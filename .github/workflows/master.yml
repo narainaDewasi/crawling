@@ -21,7 +21,6 @@ jobs:
           npm install
           npm start
   deploy:
-    need: [start]
     runs-on: ubuntu-latest
 
     steps:
