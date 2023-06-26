@@ -2,23 +2,35 @@ const axios = require("axios");
 const fs = require("fs");
 const cheerio = require("cheerio");
 const axiosRetry = require("axios-retry");
+const express = require('express')
+const app = express()
+const port = 5000;
 
 //GLOBAL VARIABLES
 const arrVisitedLinks = [];
 
-axiosRetry(axios, {
-  retryDelay: (retryCount = 5) => {
-    return retryCount * 100;
-  },
-  onRetry: (retryCount = 5, error) => {
-    if (error) console.log("AXIOS RETRY ERROR => " + error);
-    console.log("AXIOS RETRY OCCURED");
-  },
-});
 
-// Function to scrape a web page
-async function scrapePage(url, parentTagClass, tags) {
+
+
+
+app.get('/', (req,res)=>{
+  res.send('hello')
+})
+
+app.get('/scraping/:url?',async function scrapePage(req,res) {
+  const url = req.query.url
+  async function scrapePage(url, parentTagClass, tags) {
   try {
+    axiosRetry(axios, {
+      retryDelay: (retryCount = 5) => {
+        return retryCount * 100;
+      },
+      onRetry: (retryCount = 5, error) => {
+        if (error) console.log("AXIOS RETRY ERROR => " + error);
+        console.log("AXIOS RETRY OCCURED");
+      },
+    });
+
     if (arrVisitedLinks.includes(url)) {
       return;
     }
@@ -129,4 +141,12 @@ async function scrapePage(url, parentTagClass, tags) {
   }
 }
 
-scrapePage("https://uniraj.ac.in/", [""], ["p"]);
+scrapePage(url, [""], ["p"]);
+res.send(`scraping ${url}`)
+} )
+
+
+
+app.listen(port,()=>{
+  console.log(`server running on http://localhost:${port}`)
+})
