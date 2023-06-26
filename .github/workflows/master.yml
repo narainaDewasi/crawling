@@ -16,10 +16,10 @@ jobs:
 
     steps:
      - name: SSH Server Deploy
-        uses: kostya-ten/ssh-server-deploy@v4
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.SSH_USER }}
-          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          scp_target: ~/
+       uses: kostya-ten/ssh-server-deploy@v4
+       with:
+         host: ${{ secrets.SSH_HOST }}
+         port: ${{ secrets.SSH_PORT }}
+         username: ${{ secrets.SSH_USER }}
+         private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+         scp_target: ~/
