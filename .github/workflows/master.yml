@@ -6,22 +6,14 @@ name: 🚀 Deploy website on push
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
-
+    container: node:18
     steps:
-      - uses: actions/checkout@v2
-      - name: Use node js
-        uses: actions/setup-node@v1
-        with:
-         node-version: ${{ matrix.node-version }}
-      - name: npm install and start
-        run: |
-          npm install
-          npm start
+      - uses: actions/checkout@v3
+      - run: npm install
+      - run: npm start
+      
   deploy:
-    need: [start]
+    needs: [build]
     runs-on: ubuntu-latest
 
     steps:
@@ -43,4 +35,4 @@ jobs:
                git pull origin master
                npm install
                npm start
-               pm2 restart api
+               pm2 restart crawling
