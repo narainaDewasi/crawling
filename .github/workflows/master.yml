@@ -15,22 +15,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-     - name: SSH deploy
-       uses: appleboy/ssh-action@master
-       with:
+     - name: SSH Server Deploy
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-
-          script: |
-              curl -o-  https://raw.githubusercontent.com/creationix/nvm/v@.33.8/install.sh | bash
-              . ~/.nvm/nvm.sh
-
-               nvm install 14
-               npm install -g pm2
-               cd ~/CRAWLING
-               git pull origin master
-               npm install
-               npm start
-               pm2 restart crawling
+          username: ${{ secrets.SSH_USER }}
+          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          scp_target: ~/
