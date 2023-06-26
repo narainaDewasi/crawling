@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: npm install
-
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
