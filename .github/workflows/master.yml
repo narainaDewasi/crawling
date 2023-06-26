@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: npm install
-      - run: node index.js
 
   deploy:
     needs: [build]
@@ -34,5 +33,5 @@ jobs:
                cd ~/CRAWLING
                git pull origin master
                npm install
-               node index.js
+               npm start
                pm2 restart crawling
