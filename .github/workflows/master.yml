@@ -23,4 +23,5 @@ jobs:
          username: ${{ secrets.SSH_USER }}
          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
          scp_target: ~/
-         run: npm start
+     - name: npm start
+       run: npm start
