@@ -5,28 +5,20 @@ const port = 5000;
 
 //GLOBAL VARIABLES
 // const arrVisitedLinks = [];
+// axiosRetry(axios, {
+//   retryDelay: (retryCount = 5) => {
+//     return retryCount * 100;
+//   },
+//   onRetry: (retryCount = 5, error) => {
+//     if (error) console.log("AXIOS RETRY ERROR => " + error);
+//     console.log("AXIOS RETRY OCCURED");
+//   },
+// });
 
-
-
-
-
-app.get('/', (req,res)=>{
-  res.send('hello')
-})
-
-// app.get('/scraping/:url?',async function scrapePage(req,res) {
 //   const url = req.query.url
 //   async function scrapePage(url, parentTagClass, tags) {
 //   try {
-//     axiosRetry(axios, {
-//       retryDelay: (retryCount = 5) => {
-//         return retryCount * 100;
-//       },
-//       onRetry: (retryCount = 5, error) => {
-//         if (error) console.log("AXIOS RETRY ERROR => " + error);
-//         console.log("AXIOS RETRY OCCURED");
-//       },
-//     });
+    
 
 //     if (arrVisitedLinks.includes(url)) {
 //       return;
@@ -138,12 +130,6 @@ app.get('/', (req,res)=>{
 //   }
 // }
 
-// scrapePage(url, [""], ["p"]);
-// res.send(`scraping ${url}`)
-// } )
+// scrapePage('', [""], ["p"]);
 
-
-
-app.listen(port,()=>{
-  console.log(`server running on http://localhost:${port}`)
-})
+console.log('hello')
