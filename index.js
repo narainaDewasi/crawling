@@ -1,8 +1,3 @@
-
-const express = require('express')
-const app = express()
-const port = 5000;
-
 //GLOBAL VARIABLES
 // const arrVisitedLinks = [];
 // axiosRetry(axios, {
