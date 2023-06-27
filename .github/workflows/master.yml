@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: npm install
-      - run: npm start
+      - run: node ./CRAWLING/index.js
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
