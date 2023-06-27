@@ -10,17 +10,34 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: npm install
-      - run: npm start
+      # - run: npm start
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
 
     steps:
      - name: SSH Server Deploy
-       uses: kostya-ten/ssh-server-deploy@v4
+      #  uses: kostya-ten/ssh-server-deploy@v4
+      #  with:
+      #    host: ${{ secrets.SSH_HOST }}
+      #    port: ${{ secrets.SSH_PORT }}
+      #    username: ${{ secrets.SSH_USER }}
+      #    private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #    scp_target: ~/
+       uses: appleboy/ssh-action@master
        with:
-         host: ${{ secrets.SSH_HOST }}
-         port: ${{ secrets.SSH_PORT }}
-         username: ${{ secrets.SSH_USER }}
-         private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-         scp_target: ~/
+          host: ${{ secrets.SSH_HOST }}
+          host: ${{ secrets.SSH_USER }}
+          host: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_PORT }}
+          script: |
+              curl -o-  https://raw.githubusercontent.com/creationix/nvm/v@.33.8/install.sh | bash
+              . ~/.nvi/nvm.sh
+
+              nvm instal 14
+              npm install -g pm2
+              cd ~/CRAWLING
+              git pull origin master
+              npm install
+              npm start
+              pm2 restart crawling
