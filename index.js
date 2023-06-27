@@ -24,7 +24,7 @@ axiosRetry(axios, {
       return;
     }
     arrVisitedLinks.push(url);
-    // const trimUrl = url.split("/").slice(0, 3).join("/");
+    const trimUrl = url.split("/").slice(0, 3).join("/");
     // console.log(trimUrl)
 
     const response = await axios({
@@ -118,7 +118,7 @@ axiosRetry(axios, {
       links.each((index, element) => {
         var href = $(element).attr("href");
         href = new URL(href, url).href;
-        if (href) {
+        if (href && href.startsWith(trimUrl)) {
           const absoluteUrl = href;
           scrapePage(absoluteUrl, parentTagClass, tags);
         }
@@ -130,6 +130,6 @@ axiosRetry(axios, {
   }
 }
 
-scrapePage('http://127.0.0.1:5500/index.html', [""], ["p"]);
+scrapePage('https://gad.rajasthan.gov.in/', [""], ["p"]);
 
 console.log('hello')
