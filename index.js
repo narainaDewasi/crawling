@@ -1,11 +1,29 @@
-const axios = require('axios')
-const axiosRetry = require('axios-retry')
-const cheerio = require('cheerio')
-const fs = require('fs')
+const axios = require("axios");
+const axiosRetry = require("axios-retry");
+const cheerio = require("cheerio");
+const fs = require("fs");
+var archiver = require("archiver");
 
 // GLOBAL VARIABLES
 
 const arrVisitedLinks = [];
+
+fs.mkdir("./cleanDataFiles", function(err) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log("cleanDataFiles successfully created.")
+  }
+})
+
+fs.mkdir("./downFile", function(err) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log("downFile successfully created.")
+  }
+})
+
 axiosRetry(axios, {
   retryDelay: (retryCount = 5) => {
     return retryCount * 100;
@@ -16,11 +34,9 @@ axiosRetry(axios, {
   },
 });
 
-  async function scrapePage(url, parentTagClass, tags) {
+async function scrapePage(url, parentTagClass, tags) {
   try {
-    
-
-    if (arrVisitedLinks.includes(url)) {
+    if (arrVisitedLinks.includes(url) || arrVisitedLinks.length > 200) {
       return;
     }
     arrVisitedLinks.push(url);
@@ -51,6 +67,26 @@ axiosRetry(axios, {
           flag: "wx",
         });
         console.log("file downloaded ---> " + filename);
+
+        if (arrVisitedLinks.length > 199) {
+          var archive = archiver.create("zip", {});
+          var output = fs.createWriteStream('./zipPDF.zip');
+
+          archive.pipe(output);
+
+          archive
+            .directory('./downFile')
+            .finalize();
+
+            fs.rmdir("./downFile", (err) => {
+              if(err){
+                console.log('downFile delete error --> '+ err)
+              }
+              console.log("Folder Deleted!");
+             
+            });
+        }
+
         return;
       } catch (error) {
         console.log("download error---> " + error);
@@ -123,6 +159,24 @@ axiosRetry(axios, {
           scrapePage(absoluteUrl, parentTagClass, tags);
         }
       });
+      if (arrVisitedLinks.length > 199) {
+        var archive = archiver.create("zip", {});
+        var output = fs.createWriteStream('./zipTXT.zip');
+
+        archive.pipe(output);
+
+        archive
+          .directory('./cleanDataFiles')
+          .finalize();
+
+          fs.rmdir("./cleanDataFiles", (err) => {
+            if(err){
+              console.log('downFile delete error --> '+ err)
+            }
+            console.log("Folder Deleted!");
+           
+          });
+      }
     }
   } catch (error) {
     console.error(`scrapePage:- Error scraping ${url}: ${error}`);
@@ -130,6 +184,6 @@ axiosRetry(axios, {
   }
 }
 
-scrapePage('https://gad.rajasthan.gov.in/', [""], ["p"]);
+scrapePage("https://gad.rajasthan.gov.in/", [""], ["p"]);
 
-console.log('hello')
+console.log("hello");
