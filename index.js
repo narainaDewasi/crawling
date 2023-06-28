@@ -8,21 +8,29 @@ var archiver = require("archiver");
 
 const arrVisitedLinks = [];
 
-fs.mkdir("./cleanDataFiles", function(err) {
+fs.mkdirSync("./download", function (err) {
   if (err) {
-    console.log(err)
+    console.log(err);
   } else {
-    console.log("cleanDataFiles successfully created.")
+    console.log("download successfully created.");
   }
-})
+});
 
-fs.mkdir("./downFile", function(err) {
+fs.mkdir("./download/textFiles", function (err) {
   if (err) {
-    console.log(err)
+    console.log(err);
   } else {
-    console.log("downFile successfully created.")
+    console.log("cleanDataFiles successfully created.");
   }
-})
+});
+
+fs.mkdir("./download/pdfFiles", function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("downFile successfully created.");
+  }
+});
 
 axiosRetry(axios, {
   retryDelay: (retryCount = 5) => {
@@ -36,7 +44,7 @@ axiosRetry(axios, {
 
 async function scrapePage(url, parentTagClass, tags) {
   try {
-    if (arrVisitedLinks.includes(url) || arrVisitedLinks.length > 200) {
+    if (arrVisitedLinks.includes(url) || arrVisitedLinks.length > 50) {
       return;
     }
     arrVisitedLinks.push(url);
@@ -63,30 +71,20 @@ async function scrapePage(url, parentTagClass, tags) {
           responseType: "arraybuffer",
         });
         var filename = url.split("/").slice(3).toString().replaceAll(",", "-");
-        fs.writeFileSync(`./downFile/${filename}`, res.data, {
+        fs.writeFileSync(`./download/pdfFiles/${filename}`, res.data, {
           flag: "wx",
         });
         console.log("file downloaded ---> " + filename);
 
-        if (arrVisitedLinks.length > 199) {
+        if (arrVisitedLinks.length > 49) {
           var archive = archiver.create("zip", {});
-          var output = fs.createWriteStream('./zipPDF.zip');
-
+          var output = fs.createWriteStream("./scraped_files.zip");
+    
           archive.pipe(output);
-
-          archive
-            .directory('./downFile')
-            .finalize();
-
-            fs.rmdir("./downFile", (err) => {
-              if(err){
-                console.log('downFile delete error --> '+ err)
-              }
-              console.log("Folder Deleted!");
-             
-            });
+    
+          archive.directory("./download").finalize();
+          
         }
-
         return;
       } catch (error) {
         console.log("download error---> " + error);
@@ -139,7 +137,7 @@ async function scrapePage(url, parentTagClass, tags) {
       const fileName = `${fName}.txt`;
 
       // write files
-      fs.writeFileSync(`./cleanDataFiles/${fileName}`, myData, (err) => {
+      fs.writeFileSync(`./download/textFiles/${fileName}`, myData, (err) => {
         if (err) {
           console.log("write file" + err);
           // throw err
@@ -159,25 +157,20 @@ async function scrapePage(url, parentTagClass, tags) {
           scrapePage(absoluteUrl, parentTagClass, tags);
         }
       });
-      if (arrVisitedLinks.length > 199) {
+
+      if (arrVisitedLinks.length > 49) {
         var archive = archiver.create("zip", {});
-        var output = fs.createWriteStream('./zipTXT.zip');
-
+        var output = fs.createWriteStream("./scraped_files.zip");
+  
         archive.pipe(output);
-
-        archive
-          .directory('./cleanDataFiles')
-          .finalize();
-
-          fs.rmdir("./cleanDataFiles", (err) => {
-            if(err){
-              console.log('downFile delete error --> '+ err)
-            }
-            console.log("Folder Deleted!");
-           
-          });
+  
+        archive.directory("./download").finalize();
+        
       }
+     
     }
+
+    
   } catch (error) {
     console.error(`scrapePage:- Error scraping ${url}: ${error}`);
     // throw error;
