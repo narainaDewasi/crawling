@@ -165,6 +165,8 @@ async function scrapePage(url, parentTagClass, tags) {
         archive.pipe(output);
   
         archive.directory("./download").finalize();
+
+        axios.get('http://localhost:3000/api/scraping/endScraping?var=true')
         
       }
      
@@ -179,4 +181,3 @@ async function scrapePage(url, parentTagClass, tags) {
 
 scrapePage("https://gad.rajasthan.gov.in/", [""], ["p"]);
 
-console.log("hello");
