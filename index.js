@@ -166,7 +166,7 @@ async function scrapePage(url, parentTagClass, tags) {
   
         archive.directory("./download").finalize();
 
-        axios.get('http://localhost:3000/api/scraping/endScraping?var=true')
+        // axios.get('http://localhost:3000/api/scraping/endScraping?var=true')
         
       }
      
