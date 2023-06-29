@@ -83,7 +83,11 @@ async function scrapePage(url, parentTagClass, tags) {
           archive.pipe(output);
     
           archive.directory("./download").finalize();
-          axios.get('http://localhost:3000/api/scraping/end-scraping',{timeout: 60000})
+          try {
+            axios.get('http://localhost:3000/api/scraping/end-scraping',{timeout: 60000})
+          } catch (err) {
+            console.log(err)
+          }
         }
         return;
       } catch (error) {
@@ -171,8 +175,11 @@ async function scrapePage(url, parentTagClass, tags) {
         //   method : 'get',
         //   timeout: 120000
         // })
-
-        axios.get('http://localhost:3000/api/scraping/end-scraping',{timeout: 60000})
+        try {
+          axios.get('http://localhost:3000/api/scraping/end-scraping',{timeout: 60000})
+        } catch (err) {
+          console.log(err)
+        }
         
       }
      
