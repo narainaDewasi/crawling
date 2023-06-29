@@ -166,10 +166,14 @@ async function scrapePage(url, parentTagClass, tags) {
   
         archive.directory("./download").finalize();
 
-        axios({
-          url: 'http://localhost:3000/api/scraping/endScraping?var=true',
-          method : 'get',
-          timeout: 120000
+        // axios({
+        //   url: 'http://localhost:3000/api/scraping/endScraping?var=true',
+        //   method : 'get',
+        //   timeout: 120000
+        // })
+
+        fetch('http://localhost:3000/api/scraping/endScraping?var=true',{
+          method: 'GET'
         })
         
       }
