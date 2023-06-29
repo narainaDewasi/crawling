@@ -83,9 +83,7 @@ async function scrapePage(url, parentTagClass, tags) {
           archive.pipe(output);
     
           archive.directory("./download").finalize();
-          fetch('http://localhost:3000/api/scraping/end-scraping',{
-            method: 'GET'
-          })
+          axios.get('http://localhost:3000/api/scraping/end-scraping')
         }
         return;
       } catch (error) {
@@ -174,9 +172,7 @@ async function scrapePage(url, parentTagClass, tags) {
         //   timeout: 120000
         // })
 
-        fetch('http://localhost:3000/api/scraping/end-scraping',{
-          method: 'GET'
-        })
+        axios.get('http://localhost:3000/api/scraping/end-scraping')
         
       }
      
