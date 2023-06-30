@@ -3,6 +3,13 @@ const axiosRetry = require("axios-retry");
 const cheerio = require("cheerio");
 const fs = require("fs");
 var archiver = require("archiver");
+const { MilvusClient } = require("@zilliz/milvus2-sdk-node");
+const { Milvus } = require("langchain/vectorstores/milvus");
+const { OpenAIEmbeddings } = require("langchain/embeddings/openai");
+const { TextLoader } = require("langchain/document_loaders/fs/text");
+const address = "65.20.66.41:19530";
+const milvusClient = new MilvusClient(address);
+require('dotenv').config()
 
 // GLOBAL VARIABLES
 
@@ -49,7 +56,7 @@ async function scrapePage(url, parentTagClass, tags) {
     }
     arrVisitedLinks.push(url);
     const trimUrl = url.split("/").slice(0, 3).join("/");
-    // console.log(trimUrl)
+    // // console.log(trimUrl)
 
     const response = await axios({
       url,
@@ -57,7 +64,7 @@ async function scrapePage(url, parentTagClass, tags) {
       timeout: 120000,
     });
     var resType = response.headers["content-type"];
-    console.log(resType);
+    // console.log(resType);
 
     if (
       resType == "application/pdf" ||
@@ -77,12 +84,12 @@ async function scrapePage(url, parentTagClass, tags) {
         console.log("file downloaded ---> " + filename);
 
         if (arrVisitedLinks.length > 49) {
-          var archive = archiver.create("zip", {});
-          var output = fs.createWriteStream("./scraped_files.zip");
+          // var archive = archiver.create("zip", {});
+          // var output = fs.createWriteStream("./scraped_files.zip");
     
-          archive.pipe(output);
+          // archive.pipe(output);
     
-          archive.directory("./download").finalize();
+          // archive.directory("./download").finalize();
           try {
             axios.get('http://localhost:3000/api/scraping/end-scraping',{timeout: 60000})
           } catch (err) {
@@ -94,7 +101,11 @@ async function scrapePage(url, parentTagClass, tags) {
         console.log("download error---> " + error);
         throw error;
       }
-    } else {
+    } 
+
+    if(resType != "application/pdf" ||
+    resType != "application/msword" ||
+    resType != "application/vnd.ms-excel"){
       const allTags = "" + tags;
       console.log("axios url---> " + url);
 
@@ -163,18 +174,26 @@ async function scrapePage(url, parentTagClass, tags) {
       });
 
       if (arrVisitedLinks.length > 49) {
-        var archive = archiver.create("zip", {});
-        var output = fs.createWriteStream("./scraped_files.zip");
-  
-        archive.pipe(output);
-  
-        archive.directory("./download").finalize();
+        // const embeddings = new OpenAIEmbeddings({
+        //   openAIApiKey: process.env.OPENAI_API_KEY, // In Node.js defaults to process.env.OPENAI_API_KEY
+        // });
+        // const trainAI = async function (options) {
+        
+        //   const loader = new TextLoader("./download/textFiles/gad-rajasthan-gov-in-codeofconduct-htm.txt");
+        //   const docs = await loader.load();
+        //   const vectorStore = await Milvus.fromDocuments(docs, embeddings);
+        //   // return vectorStore;
+        //   console.log(getCollectionStatistics(vectorStore.collectionName));
+        // }
 
-        // axios({
-        //   url: 'http://localhost:3000/api/scraping/endScraping?var=true',
-        //   method : 'get',
-        //   timeout: 120000
-        // })
+        // trainAI()
+        
+        // async function getCollectionStatistics(collection_name) {
+        //   const res = await milvusClient.getCollectionStatistics({ collection_name });
+        //   console.log(res);
+        // }
+
+        
         try {
           axios.get('http://localhost:3000/api/scraping/end-scraping',{timeout: 60000})
         } catch (err) {
@@ -182,9 +201,7 @@ async function scrapePage(url, parentTagClass, tags) {
         }
         
       }
-     
     }
-
     
   } catch (error) {
     console.error(`scrapePage:- Error scraping ${url}: ${error}`);

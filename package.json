@@ -10,9 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@zilliz/milvus2-sdk-node": "^2.2.18",
     "archiver": "^5.3.1",
     "axios": "^1.4.0",
     "axios-retry": "^3.5.1",
-    "cheerio": "^1.0.0-rc.12"
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.3.1",
+    "langchain": "^0.0.100"
   }
 }
