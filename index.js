@@ -91,7 +91,7 @@ async function scrapePage(url, parentTagClass, tags) {
     
           // archive.directory("./download").finalize();
           try {
-            axios.get('http://localhost:3000/api/scraping/end-scraping',{timeout: 60000})
+            axios.get('https://fin-gpt.slashash.dev/api/scraping/end-scraping',{timeout: 60000})
           } catch (err) {
             console.log(err)
           }
@@ -195,7 +195,7 @@ async function scrapePage(url, parentTagClass, tags) {
 
         
         try {
-          axios.get('http://localhost:3000/api/scraping/end-scraping',{timeout: 60000})
+          axios.get('https://fin-gpt.slashash.dev/api/scraping/end-scraping',{timeout: 60000})
         } catch (err) {
           console.log(err)
         }
