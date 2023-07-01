@@ -51,7 +51,7 @@ axiosRetry(axios, {
 
 async function scrapePage(url, parentTagClass, tags) {
   try {
-    if (arrVisitedLinks.includes(url) || arrVisitedLinks.length > 50) {
+    if (arrVisitedLinks.includes(url) || arrVisitedLinks.length > 10) {
       return;
     }
     arrVisitedLinks.push(url);
@@ -83,7 +83,7 @@ async function scrapePage(url, parentTagClass, tags) {
         });
         console.log("file downloaded ---> " + filename);
 
-        if (arrVisitedLinks.length > 49) {
+        if (arrVisitedLinks.length > 9) {
           // var archive = archiver.create("zip", {});
           // var output = fs.createWriteStream("./scraped_files.zip");
     
@@ -173,7 +173,7 @@ async function scrapePage(url, parentTagClass, tags) {
         }
       });
 
-      if (arrVisitedLinks.length > 49) {
+      if (arrVisitedLinks.length > 9) {
         // const embeddings = new OpenAIEmbeddings({
         //   openAIApiKey: process.env.OPENAI_API_KEY, // In Node.js defaults to process.env.OPENAI_API_KEY
         // });
@@ -209,5 +209,5 @@ async function scrapePage(url, parentTagClass, tags) {
   }
 }
 
-scrapePage("https://gad.rajasthan.gov.in/", [""], ["p"]);
+scrapePage("https://revenue.ie/", [""], ["p"]);
 
